@@ -1,0 +1,80 @@
+services:
+  backend:
+    container_name: go-backend
+    image: golang:1.19
+    user: "${UID}:${GID}"
+    ports:
+      - 8080:8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./backend/start.sh:/start.sh
+      - ./backend/module:/app
+      - ./backend/cache:/.cache
+    networks:
+      - app-network
+    command: /start.sh
+
+  mysql:
+    container_name: mysql
+    image: mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/dumps:/docker-entrypoint-initdb.d/
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    image: node:18-alpine
+    container_name: react-frontend
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    command: >
+      sh -c "npm init react-app . || (npm ci && npm run build && npm start)"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost/api
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./backend/public:/backend/public
+      - ./frontend/public:/frontend/public
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+  socket-volume:
+  frontend-build:
+
+networks:
+  app-network:
+    driver: bridge
