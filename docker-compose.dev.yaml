@@ -11,7 +11,7 @@ services:
     volumes:
       - ./backend/start.sh:/start.sh
       - ./backend/module:/app
-      - .go-build-cache:/.cache
+      - go-build-cache:/.cache
     networks:
       - app-network
     command: /start.sh
@@ -62,8 +62,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./backend/public:/backend/public
+      - ./nginx/conf.d/dev.conf:/etc/nginx/conf.d/default.conf
+      - ./backend:/backend
+      - ./frontend:/frontend
     depends_on:
       - frontend
       - backend
