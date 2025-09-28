@@ -1,6 +1,6 @@
 # Базовая конфигурация для запуска контейнеров при помощи Docker Compose
 
-<img alt="Docker Compose" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/ac32d0d14ef0b4f66a0df63dd2205054dfbb6cea/static/media/docker-compose.png" height="350">
+<img alt="Docker Compose" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/e4f708553ad0aa072b92cd22262d752338b37b9f/static/media/docker-compose.png" height="350">
 
 Основные конфигурационные файлы Docker Compose:
 1. [DEV](./docker-compose.dev.yaml).
@@ -28,6 +28,6 @@
 
 ## React
 
-<img alt="React" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/ac32d0d14ef0b4f66a0df63dd2205054dfbb6cea/static/media/react.png" height="350">
+<img alt="React" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/e4f708553ad0aa072b92cd22262d752338b37b9f/static/media/react.png" height="350">
 
 Предусмотрен build и запуск тестового сервера React, когда используется тестовая конфигурация Docker Compose и только build в противном случае.
