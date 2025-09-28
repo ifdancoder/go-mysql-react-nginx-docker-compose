@@ -2,7 +2,6 @@ services:
   backend:
     container_name: go-backend
     image: golang:1.19
-    user: "${UID}:${GID}"
     ports:
       - 8080:8080
     depends_on:
@@ -25,7 +24,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
       - ./db/dumps:/docker-entrypoint-initdb.d/
     networks:
       - app-network
@@ -38,7 +37,6 @@ services:
   frontend:
     image: node:18-alpine
     container_name: react-frontend
-    user: "${UID}:${GID}"
     volumes:
       - ./frontend:/app
     working_dir: /app
@@ -72,9 +70,8 @@ services:
       - app-network
 
 volumes:
-  mysql_data:
+  mysql-data:
   go-build-cache:
-  frontend-build:
 
 networks:
   app-network:
