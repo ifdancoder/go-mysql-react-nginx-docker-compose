@@ -25,14 +25,15 @@ help:
 	@echo "Compose file: $(COMPOSE_FILE)"
 	@echo ""
 	@echo "Commands:"
-	@echo "  make build    - Build images"
-	@echo "  make up       - Start containers"
-	@echo "  make down     - Stop containers"
-	@echo "  make logs     - Show logs"
-	@echo "  make restart  - Restart containers"
-	@echo "  make rebuild  - Rebuild and restart"
-	@echo "  make config  - Print config"
-	@echo "  make status  - Print status"
+	@echo "  make build		- Build images"
+	@echo "  make up		- Detached containers start"
+	@echo "  make up-synced	- Synced containers start"
+	@echo "  make down		- Stop containers"
+	@echo "  make logs		- Show logs"
+	@echo "  make restart	- Restart containers"
+	@echo "  make rebuild	- Rebuild and restart"
+	@echo "  make config	- Print config"
+	@echo "  make status	- Print status"
 
 build:
 	$(COMPOSE) build

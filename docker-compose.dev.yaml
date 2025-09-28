@@ -1,13 +1,15 @@
 services:
   backend:
     container_name: go-backend
-    image: golang:1.19
+    user: ${UID}:${GID}
+    build:
+      context: ./backend
     ports:
       - 8080:8080
     volumes:
       - ./backend/start.sh:/start.sh
       - ./backend/module:/app
-      - go-build-cache:/.cache
+      - ./backend/build-cache:/.cache
     networks:
       - app-network
     command: /start.sh
@@ -54,7 +56,7 @@ services:
     environment:
       NGINX_HOST: ${NGINX_HOST}
     command: >
-      sh -c "/etc/nginx/start.sh && /docker-entrypoint.sh"
+      sh -c "/etc/nginx/start.sh"
     volumes:
       - ./nginx/start.sh:/etc/nginx/start.sh
       - ./nginx/conf.d/dev.conf:/etc/nginx/conf.d/default.conf.template
@@ -65,7 +67,6 @@ services:
 
 volumes:
   mysql-data:
-  go-build-cache:
 
 networks:
   app-network:
