@@ -11,7 +11,7 @@ services:
     volumes:
       - ./backend/start.sh:/start.sh
       - ./backend/module:/app
-      - ./backend/cache:/.cache
+      - .go-build-cache:/.cache
     networks:
       - app-network
     command: /start.sh
@@ -64,7 +64,6 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./backend/public:/backend/public
-      - ./frontend/public:/frontend/public
     depends_on:
       - frontend
       - backend
@@ -73,7 +72,7 @@ services:
 
 volumes:
   mysql_data:
-  socket-volume:
+  go-build-cache:
   frontend-build:
 
 networks:
