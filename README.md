@@ -1,5 +1,7 @@
 # Базовая конфигурация для запуска контейнеров при помощи Docker Compose
 
+## Docker Compose
+
 <p align="center">
     <img alt="Docker Compose" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/e4f708553ad0aa072b92cd22262d752338b37b9f/static/media/docker-compose.png" height="350">
 </p>
@@ -11,7 +13,19 @@
 
 Для Docker Compose необходим свой конфигурационный файл окружения .env ([Пример .env](./.env.example), новый .env необходимо разместить в той же директории, что и приведенный пример).
 
-## MySQL
+## Makefile
+
+В репозитории представлен Makefile для удобства билда/запуска/выключения и прочих действий по отношению к сервисам Docker Compose. Чтобы увидеть возможные команды, добавленные при помощи Makefile, необходимо прописать:
+
+```bash
+    make help
+```
+
+## Сервисы
+
+Сервисы Docker Compose представлены и описаны ниже
+
+### MySQL
 
 <p align="center">
     <img alt="MySQL" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/ac32d0d14ef0b4f66a0df63dd2205054dfbb6cea/static/media/mysql.png" height="350">
@@ -20,7 +34,7 @@
 
 Обыкновенный MySQL с двумя volume, один из которых необходим для хранения данных бд, а другой - для заполнения бд на основе дампов [Директория для дампов](./db/dumps).
 
-## Nginx
+### Nginx
 
 <p align="center">
     <img alt="Nginx" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/ac32d0d14ef0b4f66a0df63dd2205054dfbb6cea/static/media/nginx.png" height="350">
@@ -33,7 +47,7 @@
 
 Для nginx необходим свой конфигурационный файл окружения .env ([Пример .env](./nginx/.env.example), новый .env необходимо разместить в той же директории, что и приведенный пример) для удобства подстановки Nginx хоста в конфигурации. Билд и запуск происходит посредством файла [/nginx/start.sh](./nginx/start.sh).
 
-## Golang
+### Golang
 
 <p align="center">
     <img alt="Golang" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/ac32d0d14ef0b4f66a0df63dd2205054dfbb6cea/static/media/golang.png" height="350">
@@ -42,9 +56,9 @@
 
 Предусмотрен build и запуск приложения на Go во время запуска контейнера (а не его билда). Билд и запуск происходит посредством файла [/backend/start.sh](./backend/start.sh).
 
-Для сервера Go необходим свой конфигурационный файл окружения .env ([Пример .env](./backend/module/.env.example), новый .env необходимо разместить в той же директории, что и приведенный пример). 
+Для приложения на Go необходим свой конфигурационный файл окружения .env ([Пример .env](./backend/module/.env.example), новый .env необходимо разместить в той же директории, что и приведенный пример). 
 
-## React
+### React
 
 <p align="center">
     <img alt="React" src="https://raw.githubusercontent.com/ifdancoder/go-mysql-react-nginx-docker-compose/e4f708553ad0aa072b92cd22262d752338b37b9f/static/media/react.png" height="350">
