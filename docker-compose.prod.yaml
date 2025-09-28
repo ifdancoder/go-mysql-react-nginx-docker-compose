@@ -52,13 +52,19 @@ services:
       - app-network
 
   nginx:
-    image: nginx
+    build:
+      context: ./nginx
     container_name: nginx-proxy
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      NGINX_HOST: ${NGINX_HOST}
+    command: >
+      sh -c "/etc/nginx/start.sh && /docker-entrypoint.sh"
     volumes:
-      - ./nginx/conf.d/prod.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/start.sh:/etc/nginx/start.sh
+      - ./nginx/conf.d/prod.conf:/etc/nginx/conf.d/default.conf.template
       - ./backend:/backend
       - ./frontend:/frontend
     depends_on:
