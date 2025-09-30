@@ -11,7 +11,7 @@ services:
     volumes:
       - ./backend/start.sh:/start.sh
       - ./backend/module:/app
-      - ./backend/build-cache:/.cache
+      - go-build-cache:/.cache
     networks:
       - app-network
     command: /start.sh
