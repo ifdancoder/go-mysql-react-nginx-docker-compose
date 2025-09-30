@@ -1,7 +1,6 @@
 services:
   backend:
     container_name: go-backend
-    user: ${UID}:${GID}
     build:
       context: ./backend
     ports:
