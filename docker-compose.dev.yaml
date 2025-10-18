@@ -66,6 +66,7 @@ services:
 
 volumes:
   mysql-data:
+  go-build-cache:
 
 networks:
   app-network:
