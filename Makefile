@@ -29,6 +29,7 @@ help:
 	@echo "  make up		- Detached containers start"
 	@echo "  make up-synced	- Synced containers start"
 	@echo "  make down		- Stop containers"
+	@echo "  make reup		- Down + Up"
 	@echo "  make logs		- Show logs"
 	@echo "  make restart	- Restart containers"
 	@echo "  make rebuild	- Rebuild and restart"
@@ -46,6 +47,8 @@ up:
 
 down:
 	$(COMPOSE) down
+
+reup: down up
 
 logs:
 	$(COMPOSE) logs -f

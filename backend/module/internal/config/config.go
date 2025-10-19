@@ -1,5 +1,10 @@
 package config
 
+import (
+    "backend/pkg/utils"
+	"github.com/joho/godotenv"
+)
+
 type Config struct {
     DB          *DBConfig
     Migrations  *MigrationConfig
@@ -16,14 +21,16 @@ type AppConfig struct {
 }
 
 func New() *Config {
+    godotenv.Load()
+
     return &Config{
         DB: NewDBConfig(),
         Migrations: &MigrationConfig{
-            Dir: getEnv("MIGRATIONS_DIR", "./migrations"),
+            Dir: utils.GetEnv("MIGRATIONS_DIR", "./db/migrations"),
         },
         App: &AppConfig{
-            Env:  getEnv("APP_ENV", "development"),
-            Port: getEnv("APP_PORT", "8080"),
+            Env:  utils.GetEnv("APP_ENV", "development"),
+            Port: utils.GetEnv("APP_PORT", "8080"),
         },
     }
 }

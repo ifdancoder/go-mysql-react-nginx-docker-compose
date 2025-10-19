@@ -6,10 +6,12 @@ import (
     "log"
     "os"
     "path/filepath"
+    "strings"
 
     "github.com/golang-migrate/migrate/v4"
-    "github.com/golang-migrate/migrate/v4/database/postgres"
+    "github.com/golang-migrate/migrate/v4/database/mysql"
     _ "github.com/golang-migrate/migrate/v4/source/file"
+    _ "github.com/go-sql-driver/mysql"
 )
 
 type Migrator struct {
@@ -28,16 +30,40 @@ func NewMigrator(db *sql.DB, migrationsPath string) (*Migrator, error) {
         return nil, fmt.Errorf("migrations directory does not exist: %s", absPath)
     }
 
-    // Создаем экземпляр драйвера для PostgreSQL
-    driver, err := postgres.WithInstance(db, &postgres.Config{})
+    // Для Windows заменяем обратные слеши на прямые
+    absPath = filepath.ToSlash(absPath)
+
+    // Создаем экземпляр драйвера для MySQL
+    driver, err := mysql.WithInstance(db, &mysql.Config{})
     if err != nil {
         return nil, fmt.Errorf("failed to create driver: %v", err)
     }
 
-    // Создаем мигратор
+    // Создаем мигратор с правильным форматом пути
     m, err := migrate.NewWithDatabaseInstance(
         fmt.Sprintf("file://%s", absPath),
-        "postgres", 
+        "mysql", 
+        driver,
+    )
+    if err != nil {
+        return nil, fmt.Errorf("failed to create migrator: %v", err)
+    }
+
+    return &Migrator{m: m}, nil
+}
+
+// Альтернативный конструктор с более простым подходом
+func NewMigratorSimple(db *sql.DB, migrationsPath string) (*Migrator, error) {
+    // Создаем экземпляр драйвера для MySQL
+    driver, err := mysql.WithInstance(db, &mysql.Config{})
+    if err != nil {
+        return nil, fmt.Errorf("failed to create driver: %v", err)
+    }
+
+    // Используем относительный путь как есть
+    m, err := migrate.NewWithDatabaseInstance(
+        fmt.Sprintf("file://%s", migrationsPath),
+        "mysql", 
         driver,
     )
     if err != nil {
